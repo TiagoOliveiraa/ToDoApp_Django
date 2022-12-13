@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Create{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'tasks' %}">Cancel</a>
+
+<form method="POST" action="">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}

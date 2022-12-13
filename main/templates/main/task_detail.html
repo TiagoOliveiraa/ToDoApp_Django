@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Details{% endblock %}
+
+{% block content %}
+
+<table>
+    <tr>
+        <th><h1>{{task.title}}</h1></th>
+    </tr>
+    <tr>
+        <td>{{task.description}}</td>
+        <td>{{task.complete}}</td>
+        <td>{{task.created}}</td>
+        <td>{{task.user}}</td>
+    </tr>
+
+</table>
+
+
+{% endblock %}
