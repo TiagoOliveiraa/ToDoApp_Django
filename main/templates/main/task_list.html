@@ -5,42 +5,43 @@ Task List
 {% endblock %}
 
 {% block content %}
+<div class="list-container">
+    <div class="list-user">
+        {% if request.user.is_authenticated %}
+            <p>{{request.user}}</p>
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
+    <div class="list-form">
+        <h1>My Task List</h1>
 
-{% if request.user.is_authenticated %}
-    <p>{{request.user}}</p>
-    <a href="{% url 'logout' %}">Logout</a>
-{% else %}
-    <a href="{% url 'login' %}">Login</a>
-    {% endif %}
+        <form method="GET">
+            <input type="text" name="search-area" value="{{search_input}}">
+            <input type="submit" value="Search">
+        </form>
 
-<hr>
+        <table>
+            <tr>
+                <th>Item</th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for task in tasks %}
+            <tr>
+                <td>{{task.title}}</td>
+<!--                <td><a href="{% url 'tasks' task.id %}">View</a></td> --> 
+                <td><a href="{% url 'task-update' task.id %}">Edit</a></td>
+                <td><a href="{% url 'task-delete' task.id %}">Delete</a></td>
+            </tr>
 
-<h1>My Task List</h1>
+            {% empty %}
+                <h3>No Items on the list</h3>
+            {% endfor %}
+        </table>
 
-<form method="GET">
-    <input type="text" name="search-area" value="{{search_input}}">
-    <input type="submit" value="Search">
-</form>
-
-<table>
-    <tr>
-        <th>Item</th>
-        <th></th>
-        <th></th>
-    </tr>
-    {% for task in tasks %}
-    <tr>
-        <td>{{task.title}}</td>
-        <td><a href="{% url 'tasks' task.id %}">View</a></td>
-        <td><a href="{% url 'task-update' task.id %}">Edit</a></td>
-        <td><a href="{% url 'task-delete' task.id %}">Delete</a></td>
-    </tr>
-
-    {% empty %}
-        <h3>No Items on the list</h3>
-    {% endfor %}
-</table>
-
-<button><a href="{% url 'task-create' %}">New Task</a></button>
-
+        <button><a href="{% url 'task-create' %}">New Task</a></button>
+    </div>
+</div>
 {% endblock %}
