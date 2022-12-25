@@ -6,9 +6,9 @@ Task List
 
 {% block content %}
 <div class="list-container">
-    <div class="list-header">
+    <div class="header-bar">
         <div>
-            <h1>Welcome {{request.user|title}}.</h1>
+            <h1>Welcome {{request.user|title}}</h1>
             <h3>You have <i>{{count}}</i> incomplete task{{count|pluralize:"s"}}</h3>
         </div>
         {% if request.user.is_authenticated %}

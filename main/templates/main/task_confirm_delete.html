@@ -5,10 +5,19 @@ Delete
 {% endblock %}
 
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    <p>Are you sure you want to delete this task?</p>
-    <button type="submit">Delete</button>
-    <button><a href="{% url 'tasks' %}">Cancel</a></button>
-</form>
+
+<div class="header-bar">
+    <a href="{% url 'tasks' %}">&#8630; Go Back</a>
+</div>
+
+<div class="card-body">
+
+    <form method="POST">
+        {% csrf_token %}
+        <p>Are you sure you want to delete task <strong><u>"{{task.title}}"</u></strong> ?</p>
+        <button type="submit" class="btn" >Delete</button>
+    </form>
+
+</div>
 {% endblock %}
+

@@ -3,13 +3,17 @@
 {% block title %}Create{% endblock %}
 
 {% block content %}
+<div class="header-bar">
+    <a href="{% url 'tasks' %}">&#8630; Go Back</a>
+</div>
 
-<a href="{% url 'tasks' %}">Cancel</a>
-
-<form method="POST" action="">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Submit</button>
-</form>
-
+<div class="card-body"></div>
+    <div class="task-edit-form">
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="btn" >Confirm</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

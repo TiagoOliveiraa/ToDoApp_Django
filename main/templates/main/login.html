@@ -4,18 +4,19 @@
 
 {% block content %}
 
-<a href="{% url 'tasks' %}">Go Back</a>
-<br>
-<h1>Login</h1>
+<div class="header-bar">
+    <h1>Login</h1>
+</div>
+<div class="card-body">
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
 
+        <button type="submit" class="btn" >Log In</button>
+    </form>
 
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
+    <p>Dont have an account? <a href="{% url 'register' %}">SignUp</a></p>
 
-    <button type="submit">Log In</button>
-</form>
-
-<p>Dont have an account? <a href="{% url 'register' %}">SignUp</a></p>
+</div>
 
 {% endblock %}

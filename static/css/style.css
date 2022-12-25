@@ -8,7 +8,8 @@ body{
 }
 
 .main-container{
-    max-width: 750px;
+    max-width: 50rem;
+    max-height: 50rem;
     margin: auto;
     background-color: #fff;
     box-shadow: 2px 2px 12px -4px rgba(0,0,0,0.21);
@@ -20,7 +21,7 @@ body{
     font-weight: 800;
 }
 
-.list-header{
+.header-bar{
     display: flex;
     justify-content: space-between;
     margin: 0;
@@ -29,8 +30,7 @@ body{
     padding: 10px;
     border-radius: 6px 6px 0 0;
 }
-
-.list-header a{
+.header-bar a{
     text-decoration: none;
     color: #fff;
     font-size: 16px;
@@ -74,7 +74,7 @@ body{
     border: none;
     background: linear-gradient(0deg, rgb(245, 179, 73) 3%, rgb(239, 182, 9) 43%);
     color: #fff;
-    font-weight: 800px;
+    font-weight: 800;
     font-size: 16px;
     cursor: pointer;
     box-shadow: 1px 1px 6px #0000009a;
@@ -147,8 +147,13 @@ body{
     flex-direction: column;
     overflow: hidden;
     overflow-y: auto;
-    max-height: 25rem;
+    max-height: 20em;
+    min-height: auto;
     
+}
+
+.list-container{
+    min-height: 50rem;
 }
 
 .list-content-wrapper{
@@ -196,6 +201,12 @@ body{
 .list-form-search{
     margin: 0;
     padding: 1.1em;
+    display: flex;
+    flex-direction: row;
+}
+
+.list-form-search input[type=text]{
+    width: 60%;
 }
 
 a,
@@ -205,4 +216,67 @@ p{
 
 a{
     font-weight: 600;
+}
+
+input[type=checkbox]{
+    width: 40px;
+    height: 20px;
+}
+
+input[type=text],
+input[type=password],
+textarea{
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    border: none;
+    box-shadow: 1px 1px 6px #000000ce;
+    font-weight: 800;
+    width: 90%;
+}
+
+.task-edit-form form{
+    font-weight: 800;
+    padding: 20px;
+}
+
+.task-edit-form button{
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background: linear-gradient(0deg, rgb(245, 179, 73) 3%, rgb(239, 182, 9) 43%);
+    color: #fff;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 1px 1px 6px #0000009a;
+}
+
+.card-body{
+    padding: 20px;
+    font-weight: 800;
+}
+
+.task-delete strong{
+    color:rgb(252, 14, 14);
+}
+
+.btn{
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background: linear-gradient(0deg, rgb(245, 179, 73) 3%, rgb(239, 182, 9) 43%);
+    color: #fff;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 1px 1px 6px #0000009a;
+}
+
+.register-form{
+    padding: 20px;
+}
+
+.register-form button{
+    margin-top: 15px;
 }
