@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Team List
+{% endblock %}
+
+{% block content %}
+<div class="team-container">
+    <div class="header-bar">
+        <h1>Your Teams</h1>
+    </div>
+
+    <div class="team-form">
+        <div class="team">
+            {% for team in teams %}
+            <h1>{{team.name}}</h1>
+            {%empty%}
+            <p>Team list is empty</p>
+            {%endfor%}
+        </div>
+            
+    </div>
+</div>
+{% endblock %}

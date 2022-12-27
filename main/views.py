@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
-from .models import Task
+from .models import Task, Team
 
 class CustomLogin(LoginView):
     template_name="main/login.html"
@@ -84,3 +84,14 @@ class taskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
     success_url = reverse_lazy('tasks')
+    
+class teamList(LoginRequiredMixin, ListView):
+    model = Team
+    context_object_name = 'teams'
+    template_name= 'team_list.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['teams'] = context['teams'].filter(member = self.request.user)
+        
+        return context
