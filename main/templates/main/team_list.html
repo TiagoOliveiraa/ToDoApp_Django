@@ -14,6 +14,7 @@ Team List
         <div class="team">
             {% for team in teams %}
             <h1>{{team.name}}</h1>
+            <a href="{% url 'team-task-list' team.id%}">teste</a>
             {%empty%}
             <p>Team list is empty</p>
             {%endfor%}

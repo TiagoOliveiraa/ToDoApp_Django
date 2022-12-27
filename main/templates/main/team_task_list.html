@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Team Task list
+{% endblock %}
+
+{%block content%}
+
+    {% for task in tasks %}
+        <h1>{{task.tittle}}</h1>
+    {% endfor %}
+
+{%endblock%}

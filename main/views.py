@@ -95,3 +95,15 @@ class teamList(LoginRequiredMixin, ListView):
         context['teams'] = context['teams'].filter(member = self.request.user)
         
         return context
+    
+class teamTaskList(LoginRequiredMixin, ListView):
+    model = Task
+    context_object_name = 'tasks'
+    template_name = 'team_task_list.html'
+    
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        myteam = Team.objects.get(id=id)
+        context['tasks'] = context['tasks'].filter(team = myteam)
+        
+        return context
