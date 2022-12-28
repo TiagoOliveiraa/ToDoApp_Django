@@ -103,7 +103,8 @@ class teamTaskList(LoginRequiredMixin, ListView):
     
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
-        myteam = Team.objects.get(id=id)
+        myteam = Team.objects.get(id=self.kwargs['id'])
         context['tasks'] = context['tasks'].filter(team = myteam)
         
         return context
+    

@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 class Team(models.Model):
     name = models.CharField(max_length=100,blank=True)
     owner = models.ForeignKey(User, on_delete=models.DO_NOTHING ,related_name='owner', null=True)
-    moderator = models.ManyToManyField(User, related_name='moderator')
-    member = models.ManyToManyField(User, related_name='member')
+    moderator = models.ManyToManyField(User, related_name='moderator', null=True)
+    member = models.ManyToManyField(User, related_name='member', null=True)
     
     def __str__(self) -> str:
         return self.name
