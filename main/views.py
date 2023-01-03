@@ -99,12 +99,27 @@ class teamList(LoginRequiredMixin, ListView):
 class teamTaskList(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = 'tasks'
-    template_name = 'team_task_list.html'
+    template_name = 'main/team_task_list.html'
+    
     
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         myteam = Team.objects.get(id=self.kwargs['id'])
+        context['myteam'] = myteam
         context['tasks'] = context['tasks'].filter(team = myteam)
         
         return context
     
+class teamTaskCreate(LoginRequiredMixin, CreateView):
+    model = Task
+    context_object_name = 'task'
+    template_name = 'main/team_task_create.html'
+    fields = ['title','description','urgent','complete']
+    
+    def get_success_url(self, **kwargs):
+        team = Team.objects.get(id = self.kwargs['id'])
+        return reverse_lazy("team-task-list", args = [team.id])
+    
+    def form_valid(self, form, **kwargs):
+        form.instance.team = Team.objects.get(id=self.kwargs['id'])
+        return super(teamTaskCreate, self).form_valid(form)

@@ -6,8 +6,12 @@ Team Task list
 
 {%block content%}
 
+    <a href="{% url 'team-list' %}">Go Back</a>
+
     {% for task in tasks %}
-        <h1>{{task.tittle}}</h1>
+        <h1>{{task.title}}</h1>
     {% endfor %}
+
+    <a href="{% url 'team-task-create' myteam.id %}">Create new task</a>
 
 {%endblock%}
