@@ -123,3 +123,16 @@ class teamTaskCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form, **kwargs):
         form.instance.team = Team.objects.get(id=self.kwargs['id'])
         return super(teamTaskCreate, self).form_valid(form)
+    
+class teamCreate(LoginRequiredMixin, CreateView):
+    model = Team
+    context_object_name = 'team'
+    fields = ['name']
+    success_url = reverse_lazy('tasks')
+    
+    def form_valid(self, form):
+        form.save()
+        form.instance.owner = self.request.user
+        form.instance.member.add(self.request.user)
+        form.instance.moderator.add(self.request.user)
+        return super(teamCreate,self).form_valid(form)

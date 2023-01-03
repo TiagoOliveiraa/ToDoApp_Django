@@ -13,6 +13,10 @@ class Team(models.Model):
     def __str__(self) -> str:
         return self.name
 
+class invitations(models.Model):
+    userID = models.ForeignKey(User, on_delete=models.CASCADE)
+    teamID = models.ForeignKey(Team, on_delete=models.CASCADE)
+
 
 
 class Task(models.Model):
