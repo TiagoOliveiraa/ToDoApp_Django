@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import taskList, taskDetail, taskCreate, taskDelete, taskUpdate, CustomLogin, RegisterPage
 from .views import teamList,teamTaskList, teamTaskCreate, teamCreate
+from .views import teamInvite, inviteList
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
@@ -16,4 +17,6 @@ urlpatterns = [
     path('team-list/',teamList.as_view(),name="team-list"),
     path('team-task-create/<int:id>/',teamTaskCreate.as_view(), name="team-task-create"),
     path('team-create/',teamCreate.as_view(), name="team-create"),
+    path('team-invitation/<int:id>', teamInvite.as_view(), name="team-invite"),
+    path('invite-list/', inviteList.as_view(), name="invite-list"),
 ]

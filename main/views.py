@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
-from .models import Task, Team
+from .models import Task, Team, invitations, User
 
 class CustomLogin(LoginView):
     template_name="main/login.html"
@@ -93,6 +93,7 @@ class teamList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['teams'] = context['teams'].filter(member = self.request.user)
+        context['invite_count'] = invitations.objects.filter(userID = self.request.user).count()
         
         return context
     
@@ -136,3 +137,54 @@ class teamCreate(LoginRequiredMixin, CreateView):
         form.instance.member.add(self.request.user)
         form.instance.moderator.add(self.request.user)
         return super(teamCreate,self).form_valid(form)
+    
+class teamInvite(LoginRequiredMixin, CreateView):
+    model = invitations
+    context_object_name = 'invite'
+    fields = ['userID']
+    
+    
+    def get_success_url(self,**kwargs):
+        id = self.kwargs['id']
+        return reverse_lazy('team-task-list', args = [id])
+    
+    
+    
+    def form_valid(self,form,**kwargs):
+        myteam = Team.objects.get(id = self.kwargs['id'])
+        form.instance.teamID = myteam
+        return super(teamInvite,self).form_valid(form)
+    
+class inviteList(LoginRequiredMixin, ListView):
+    model = invitations
+    context_object_name = 'invites'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['invites'] = context['invites'].filter(userID = self.request.user)
+        return context
+    
+def accept_invite(request,teamid,inviteid):
+    invite = invitations.get(id = inviteid)
+    invite.teamID.member.add(request.user)
+    invite.delete()
+    
+    return HttpResponse("""<html><script>window.location.replace('/invite-list/');</script></html>""")
+
+def deny_invite(request,inviteid):
+    invite = invitations.get(id = inviteid)
+    invite.delete()
+ 
+    return HttpResponse("""<html><script>window.location.replace('/invite-list/');</script></html>""")
+
+def accept_invite_home(request,inviteid):
+    invite = invitations.get(id = inviteid)
+    invite.delete()
+    
+    return HttpResponse("""<html><script>window.location.replace('/team-list/');</script></html>""")
+
+def deny_invite_home(request,inviteid):
+    invite = invitations.get(id = inviteid)
+    invite.delete()
+    
+    return HttpResponse("""<html><script>window.location.replace('/team-list/');</script></html>""")

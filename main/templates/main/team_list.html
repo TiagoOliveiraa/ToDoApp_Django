@@ -19,6 +19,9 @@ Team List
             <p>Team list is empty</p>
             {%endfor%}
             <p><a href="{% url 'team-create' %}">Create a team</a></p>
+            {% if invite_count > 0 %}
+            <p><a href="{% url 'invite-list' %}">Invites</a></p>
+            {% endif %}
         </div>
             
     </div>

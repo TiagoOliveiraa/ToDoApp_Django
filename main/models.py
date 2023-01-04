@@ -16,6 +16,10 @@ class Team(models.Model):
 class invitations(models.Model):
     userID = models.ForeignKey(User, on_delete=models.CASCADE)
     teamID = models.ForeignKey(Team, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        name = self.userID.username + ' para ' + self.teamID.name
+        return name
 
 
 
