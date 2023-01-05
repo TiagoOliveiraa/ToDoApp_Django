@@ -162,29 +162,30 @@ class inviteList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['invites'] = context['invites'].filter(userID = self.request.user)
+        context['count'] = context['invites'].filter(userID = self.request.user).count()
         return context
     
-def accept_invite(request,teamid,inviteid):
-    invite = invitations.get(id = inviteid)
+def accept_invite(request,id):
+    invite = invitations.objects.get(id = id)
     invite.teamID.member.add(request.user)
     invite.delete()
     
     return HttpResponse("""<html><script>window.location.replace('/invite-list/');</script></html>""")
 
-def deny_invite(request,inviteid):
-    invite = invitations.get(id = inviteid)
+def deny_invite(request,id):
+    invite = invitations.objects.get(id = id)
     invite.delete()
  
     return HttpResponse("""<html><script>window.location.replace('/invite-list/');</script></html>""")
 
-def accept_invite_home(request,inviteid):
-    invite = invitations.get(id = inviteid)
+def accept_invite_home(request,id):
+    invite = invitations.objects.get(id = id)
     invite.delete()
     
     return HttpResponse("""<html><script>window.location.replace('/team-list/');</script></html>""")
 
-def deny_invite_home(request,inviteid):
-    invite = invitations.get(id = inviteid)
+def deny_invite_home(request,id):
+    invite = invitations.objects.get(id = id)
     invite.delete()
     
     return HttpResponse("""<html><script>window.location.replace('/team-list/');</script></html>""")

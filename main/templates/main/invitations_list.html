@@ -1,19 +1,20 @@
 {% extends "main/base.html" %}
 
 {% block content %}
+<p>{{count}}</p>
     {% if count == 1 %}
         {% for invite in invites %}
             <p>Team: {{invite.teamID.name}}</p>
             <p>By: {{invite.teamID.owner.username}}</p>
-            <input type="button" name="accept" value="Accept"  onclick=location.href='{% url 'accept-invite-home' %}' >
-            <input type="button" name="deny" value="Deny" onclick=location.href ='{% url 'deny-invite-home' %}' >
+            <input type="button" name="accept" value="Accept"  onclick=location.href='{% url 'accept-invite-home' invite.id%}' >
+            <input type="button" name="deny" value="Deny" onclick=location.href ='{% url 'deny-invite-home' invite.id%}' >
         {% endfor %}
     {% else %}
         {% for invite in invites %}
             <p>Team: {{invite.teamID.name}}</p>
             <p>By: {{invite.teamID.owner.username}}</p>
-            <input type="button" name="accept" value="Accept"  onclick=location.href='{% url 'accept-invite' %}' >
-            <input type="button" name="deny" value="Deny" onclick=location.href ='{% url 'deny-invite' %}' >
+            <input type="button" name="accept" value="Accept"  onclick=location.href='{% url 'accept-invite' invite.id%}' >
+            <input type="button" name="deny" value="Deny" onclick=location.href ='{% url 'deny-invite' invite.id%}' >
         {% endfor %}
     {% endif %}
 {% endblock %}
