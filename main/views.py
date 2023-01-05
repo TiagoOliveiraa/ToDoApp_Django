@@ -84,7 +84,10 @@ class taskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
     success_url = reverse_lazy('tasks')
-    
+ 
+ 
+#Team Stuff
+   
 class teamList(LoginRequiredMixin, ListView):
     model = Team
     context_object_name = 'teams'
@@ -137,6 +140,20 @@ class teamCreate(LoginRequiredMixin, CreateView):
         form.instance.member.add(self.request.user)
         form.instance.moderator.add(self.request.user)
         return super(teamCreate,self).form_valid(form)
+
+class teamEdit(LoginRequiredMixin, DetailView):
+    model = Team
+    context_object_name = 'team'
+    success_url = reverse_lazy('teams')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['members'] = context['team'].member.all()
+        owner = context['team'].owner
+        context['members'] = context['members'].exclude(id = owner.id)
+        return context
+    
+# Invite Stuff
     
 class teamInvite(LoginRequiredMixin, CreateView):
     model = invitations
