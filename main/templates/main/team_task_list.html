@@ -11,8 +11,10 @@ Team Task list
 
     {% for task in tasks %}
         <h1>{{task.title}}</h1>
+        <a href="{% url 'task-update' task.id%}">edit</a>
+        <a href="{% url 'task-delete' task.id%}">X</a>
     {% endfor %}
-
+    <br>
     <a href="{% url 'team-task-create' myteam.id %}">Create new task</a>
     {% if request.user == myteam.owner %}
     <a href="{% url 'team-detail' myteam.id %}">Edit Team</a>

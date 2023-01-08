@@ -9,17 +9,18 @@ Team Detail
 <a href="{% url 'team-task-list' team.id%}">Go Back</a>
 
 <h1>{{team.name}}</h1>
+<a href="{% url 'team-delete' team.id%}">Delete this team</a>
 
     <h3>Owner</h3>
     {{team.owner}}
     <h3>Members</h3>
     {% for member in members %}
         <p>{{member.username}}</p>
-        <a>X</a>
+        <a href = "{% url 'remove-from-team' team.id member.id%}">X</a>
         {% if member not in moderators %}
-        <a>Add as moderator</a>
+        <a href="{% url 'add-moderator' team.id member.id%}">Add as moderator</a>
         {% else %}
-        <a>Remove as moderator</a>
+        <a href="{% url 'remove-moderator' team.id member.id%}">Remove as moderator</a>
         {% endif %}
     {% endfor %}
 

@@ -132,7 +132,7 @@ class teamCreate(LoginRequiredMixin, CreateView):
     model = Team
     context_object_name = 'team'
     fields = ['name']
-    success_url = reverse_lazy('tasks')
+    success_url = reverse_lazy('team-list')
     
     def form_valid(self, form):
         form.save()
@@ -153,6 +153,51 @@ class teamEdit(LoginRequiredMixin, DetailView):
         context['members'] = context['members'].exclude(id = owner.id)
         context['moderators'] = context['team'].moderator.all()
         return context
+    
+class teamDelete(LoginRequiredMixin,DeleteView):
+    model = Team
+    context_object_name = 'team'
+    success_url = reverse_lazy('team-list')
+ 
+class teamTaskUpdate(LoginRequiredMixin, UpdateView):
+    
+    model = Task
+    fields = ['title','description','urgent','complete']
+    success_url = reverse_lazy('team-list')
+    
+class teamTaskDelete(LoginRequiredMixin, DeleteView):
+    
+    model = Task
+    context_object_name = 'task'
+    
+    def get_success_url(self):
+        con
+        return super().get_success_url()
+    success_url = reverse_lazy('team-list')
+ 
+      
+def add_as_moderator(request,teamid,userid):
+    team = Team.objects.get(id = teamid)
+    user = User.objects.get(id = userid)
+    team.moderator.add(user)
+    
+    return HttpResponse(f"<html><script>window.location.replace('/team-detail/{teamid}');</script></html>")
+
+def remove_as_moderator(request,teamid,userid):
+    team = Team.objects.get(id = teamid)
+    user = User.objects.get(id = userid)
+    team.moderator.remove(user)
+    
+    return HttpResponse(f"<html><script>window.location.replace('/team-detail/{teamid}');</script></html>")
+
+def removeFromTeam(request,teamid,userid):
+    team = Team.objects.get(id = teamid)
+    user = User.objects.get(id = userid)
+    if user in team.moderator.all():
+        team.moderator.remove(user)
+    team.member.remove(user)
+    
+    return HttpResponse(f"<html><script>window.location.replace('/team-detail/{teamid}');</script></html>")
     
 # Invite Stuff
     
@@ -185,40 +230,33 @@ class inviteList(LoginRequiredMixin, ListView):
     
 def accept_invite(request,id):
     invite = invitations.objects.get(id = id)
+    team = Team.objects.get(id = invite.teamID.id)
     invite.teamID.member.add(request.user)
     invite.delete()
     
-    return HttpResponse("""<html><script>window.location.replace('/invite-list/');</script></html>""")
+    count = team.moderator.count()
+    
+    if count > 1:
+        return HttpResponse("<html><script>window.location.replace('/invite-list/');</script></html>")
+    else:
+        return HttpResponse("<html><script>window.location.replace('/team-list/');</script></html>")
 
 def deny_invite(request,id):
     invite = invitations.objects.get(id = id)
     invite.delete()
  
-    return HttpResponse("""<html><script>window.location.replace('/invite-list/');</script></html>""")
+    return HttpResponse("<html><script>window.location.replace('/invite-list/');</script></html>")
 
 def accept_invite_home(request,id):
     invite = invitations.objects.get(id = id)
     invite.delete()
     
-    return HttpResponse("""<html><script>window.location.replace('/team-list/');</script></html>""")
+    return HttpResponse("<html><script>window.location.replace('/team-list/');</script></html>")
 
 def deny_invite_home(request,id):
     invite = invitations.objects.get(id = id)
     invite.delete()
     
-    return HttpResponse("""<html><script>window.location.replace('/team-list/');</script></html>""")
+    return HttpResponse("<html><script>window.location.replace('/team-list/');</script></html>")
 
-def add_as_moderator(request,TeamId,UserId):
-    team = Team.objects.get(id = TeamId)
-    User = User.objects.get(id = UserId)
-    team.moderator.add(User)
     
-    return HttpResponse("""<html><script>window.location.replacde('/team-detail/{{TeamId}}');</script></html>""")
-
-def remove_as_moderator(request,TeamId,UserId):
-    team = Team.objects.get(id = TeamId)
-    User = User.objects.get(id = UserId)
-    team.moderator.remove(User)
-    
-    return HttpResponse("""<html><script>window.location.replacde('/team-detail/{{TeamId}}');</script></html>""")
-
