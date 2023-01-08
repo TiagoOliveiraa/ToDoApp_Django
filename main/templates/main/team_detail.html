@@ -16,6 +16,11 @@ Team Detail
     {% for member in members %}
         <p>{{member.username}}</p>
         <a>X</a>
+        {% if member not in moderators %}
+        <a>Add as moderator</a>
+        {% else %}
+        <a>Remove as moderator</a>
+        {% endif %}
     {% endfor %}
 
 {% endblock %}

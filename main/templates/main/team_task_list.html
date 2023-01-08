@@ -14,6 +14,8 @@ Team Task list
     {% endfor %}
 
     <a href="{% url 'team-task-create' myteam.id %}">Create new task</a>
+    {% if request.user == myteam.owner %}
     <a href="{% url 'team-detail' myteam.id %}">Edit Team</a>
-
+    {% endif %}
+    
 {%endblock%}

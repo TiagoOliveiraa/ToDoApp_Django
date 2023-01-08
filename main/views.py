@@ -151,6 +151,7 @@ class teamEdit(LoginRequiredMixin, DetailView):
         context['members'] = context['team'].member.all()
         owner = context['team'].owner
         context['members'] = context['members'].exclude(id = owner.id)
+        context['moderators'] = context['team'].moderator.all()
         return context
     
 # Invite Stuff
@@ -206,3 +207,18 @@ def deny_invite_home(request,id):
     invite.delete()
     
     return HttpResponse("""<html><script>window.location.replace('/team-list/');</script></html>""")
+
+def add_as_moderator(request,TeamId,UserId):
+    team = Team.objects.get(id = TeamId)
+    User = User.objects.get(id = UserId)
+    team.moderator.add(User)
+    
+    return HttpResponse("""<html><script>window.location.replacde('/team-detail/{{TeamId}}');</script></html>""")
+
+def remove_as_moderator(request,TeamId,UserId):
+    team = Team.objects.get(id = TeamId)
+    User = User.objects.get(id = UserId)
+    team.moderator.remove(User)
+    
+    return HttpResponse("""<html><script>window.location.replacde('/team-detail/{{TeamId}}');</script></html>""")
+
