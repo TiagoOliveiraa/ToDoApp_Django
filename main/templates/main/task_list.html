@@ -12,7 +12,10 @@ Task List
             <h3>You have <i>{{count}}</i> incomplete task{{count|pluralize:"s"}}</h3>
         </div>
         {% if request.user.is_authenticated %}
+        <div class="header-links">
             <a href="{% url 'logout' %}">Logout</a>
+            <a href="{% url 'team-list'%}"><i class="fa-solid fa-people-group fa-2xl"></i></a>
+        </div>
         {% else %}
             <a href="{% url 'login' %}">Login</a>
         {% endif %}
@@ -61,9 +64,6 @@ Task List
             {%empty%}
             <p>Task list is empty</p>
             {%endfor%}
-        </div>
-        <div class="team-container">
-            <a href="{% url 'team-list'%}">Teams</a>
         </div>
             
     </div>

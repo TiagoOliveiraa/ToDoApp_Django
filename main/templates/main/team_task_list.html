@@ -7,15 +7,21 @@ Team Task list
 {%block content%}
 
     <a href="{% url 'team-list' %}">Go Back</a>
+    {% if request.user == myteam.owner %}
     <a href="{% url 'team-invite' myteam.id %}">Invite</a>
+    {% endif %}
 
     {% for task in tasks %}
         <h1>{{task.title}}</h1>
-        <a href="{% url 'task-update' task.id%}">edit</a>
-        <a href="{% url 'task-delete' task.id%}">X</a>
+        <a href="{% url 'team-task-update' task.id%}">edit</a>
+        {% if request.user == myteam.owner or request.user in moderators %}
+        <a href="{% url 'team-task-delete' task.id%}">X</a>
+        {% endif %}
     {% endfor %}
     <br>
+    {% if request.user == myteam.owner or request.user in moderators %}
     <a href="{% url 'team-task-create' myteam.id %}">Create new task</a>
+    {% endif %}
     {% if request.user == myteam.owner %}
     <a href="{% url 'team-detail' myteam.id %}">Edit Team</a>
     {% endif %}

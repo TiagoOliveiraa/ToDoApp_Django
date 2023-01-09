@@ -98,6 +98,12 @@ class teamList(LoginRequiredMixin, ListView):
         context['teams'] = context['teams'].filter(member = self.request.user)
         context['invite_count'] = invitations.objects.filter(userID = self.request.user).count()
         
+        search_input = self.request.GET.get('search_area') or ''
+        if search_input:
+            context['teams'] = context['teams'].filter(name__icontains=search_input)
+            
+        context['search_input'] = search_input
+        
         return context
     
 class teamTaskList(LoginRequiredMixin, ListView):
@@ -111,6 +117,7 @@ class teamTaskList(LoginRequiredMixin, ListView):
         myteam = Team.objects.get(id=self.kwargs['id'])
         context['myteam'] = myteam
         context['tasks'] = context['tasks'].filter(team = myteam)
+        context['moderators'] = context['myteam'].moderator.all()
         
         return context
     
@@ -163,17 +170,21 @@ class teamTaskUpdate(LoginRequiredMixin, UpdateView):
     
     model = Task
     fields = ['title','description','urgent','complete']
-    success_url = reverse_lazy('team-list')
+    
+    def get_success_url(self,**kwargs):
+        task = Task.objects.get(id = self.kwargs['pk'])
+        team = task.team
+        return reverse_lazy('team-task-list', args = [team.id])
     
 class teamTaskDelete(LoginRequiredMixin, DeleteView):
     
     model = Task
     context_object_name = 'task'
     
-    def get_success_url(self):
-        con
-        return super().get_success_url()
-    success_url = reverse_lazy('team-list')
+    def get_success_url(self,**kwargs):
+        task = Task.objects.get(id = self.kwargs['pk'])
+        team = task.team
+        return reverse_lazy('team-task-list', args=[team.id])
  
       
 def add_as_moderator(request,teamid,userid):
@@ -249,6 +260,8 @@ def deny_invite(request,id):
 
 def accept_invite_home(request,id):
     invite = invitations.objects.get(id = id)
+    team = Team.objects.get(id = invite.teamID.id)
+    invite.teamID.member.add(request.user)
     invite.delete()
     
     return HttpResponse("<html><script>window.location.replace('/team-list/');</script></html>")

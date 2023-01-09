@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import taskList, taskDetail, taskCreate, taskDelete, taskUpdate, CustomLogin, RegisterPage
-from .views import teamList,teamTaskList, teamTaskCreate, teamCreate, teamEdit, teamDelete
+from .views import teamList,teamTaskList, teamTaskCreate, teamCreate, teamEdit, teamDelete, teamTaskUpdate,teamTaskDelete
 from .views import removeFromTeam, add_as_moderator, remove_as_moderator
 from .views import teamInvite, inviteList, accept_invite, accept_invite_home, deny_invite, deny_invite_home
 from django.contrib.auth.views import LogoutView
@@ -29,4 +29,6 @@ urlpatterns = [
     path('remove-moderator/<int:teamid>/<int:userid>/',remove_as_moderator, name="remove-moderator"),
     path('remove-from-team/<int:teamid>/<int:userid>/',removeFromTeam, name="remove-from-team"),
     path('team-delete/<int:pk>', teamDelete.as_view(), name="team-delete"),
+    path('team-task-update/<int:pk>/', teamTaskUpdate.as_view(), name="team-task-update"),
+    path('team-task-delete/<int:pk>/', teamTaskDelete.as_view(), name='team-task-delete'),
 ]

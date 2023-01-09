@@ -6,24 +6,49 @@ Team List
 
 {% block content %}
 <div class="team-container">
-    <div class="header-bar">
-        <h1>Your Teams</h1>
-    </div>
-
-    <div class="team-form">
-        <a href="{% url 'tasks' %}">Go Back</a>
-        <div class="team">
-            {% for team in teams %}
-            <p><a href="{% url 'team-task-list' team.id%}">{{team.name}}</a></p>
-            {%empty%}
-            <p>Team list is empty</p>
-            {%endfor%}
-            <p><a href="{% url 'team-create' %}">Create a team</a></p>
+    <div class="team-header-bar">
+        <div class="team-header-title">
+            <h1>Your Teams</h1>
+            <a href="{% url 'tasks' %}"><i class="fa-solid fa-left-long"></i>Go Back</a>
+        </div>
+        <div class="team-header-links">
+            <a href="{% url 'tasks'%}"><i class="fa-solid fa-house fa-xl"></i></a>
             {% if invite_count > 0 %}
-            <p><a href="{% url 'invite-list' %}">Invites</a></p>
+                <a href="{% url 'invite-list' %}">Invites</a>
             {% endif %}
         </div>
-            
+    </div>
+    <div class="team-form-header">
+        <div class="team-list-search">
+            <form method="GET">
+                <input type="text" name="search_area" value="{{search_input}}">
+                <input class="team-search-button" type="submit" value="Search">
+            </form>
+        </div>
+        <p><a href="{% url 'team-create' %}"><i class="fa-solid fa-plus fa-2xl"></i></a></p>
+    </div>
+    <div class="team-form">
+        <div class="team-list-elements">
+            {% for team in teams %}
+                {% if request.user == team.owner %}
+                <div class="team-list-name">
+                    <a href="{% url 'team-task-list' team.id%}">{{team.name}}</a>
+                    <i class="fa-solid fa-crown fa-xl"></i>
+                </div>
+                {% elif request.user in team.moderator.all %}
+                <div class="team-list-name">
+                    <a href="{% url 'team-task-list' team.id%}">{{team.name}}</a>
+                    <i class="fa-solid fa-chess-knight fa-xl"></i>
+                </div>
+                {% else %}
+                <div class="team-list-name">
+                    <a href="{% url 'team-task-list' team.id%}">{{team.name}}</a>
+                </div>
+                {% endif %}
+            {%empty%}
+                Team list is empty
+            {%endfor%}
+        </div>
     </div>
 </div>
 {% endblock %}
