@@ -29,14 +29,14 @@ Task List
                     <input class="search-button" type="submit" value="Search">
                 </form>
             </div>
-            <a class="list-form-header-add" href="{% url 'task-create' %}">&#10011;</a>
+            <a class="list-form-header-add" href="{% url 'task-create' %}"><i class="fa-solid fa-plus"></i></a>
         </div>
         <div class="list-VIP">
             {% for task in tasks %}
                 {% if task.urgent and not task.complete%}
                 <div class="list-VIP-content">
                     <div class="list-VIP-item">
-                        <div class="list-VIP-icon">&#9733;</div>
+                        <div class="list-VIP-icon"><i class="fa-solid fa-star"></i></div>
                         <u><a href="{% url 'task-update' task.id%}">{{task.title}}</a></u>
                     </div>
                     <a href="{% url 'task-delete' task.id %}" class="list-delete">&#10008;</a>

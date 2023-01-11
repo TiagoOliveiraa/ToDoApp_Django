@@ -29,6 +29,6 @@ urlpatterns = [
     path('remove-moderator/<int:teamid>/<int:userid>/',remove_as_moderator, name="remove-moderator"),
     path('remove-from-team/<int:teamid>/<int:userid>/',removeFromTeam, name="remove-from-team"),
     path('team-delete/<int:pk>', teamDelete.as_view(), name="team-delete"),
-    path('team-task-update/<int:pk>/', teamTaskUpdate.as_view(), name="team-task-update"),
+    path('team-task-update/<int:pk>/<int:teamid>', teamTaskUpdate.as_view(), name="team-task-update"),
     path('team-task-delete/<int:pk>/', teamTaskDelete.as_view(), name='team-task-delete'),
 ]

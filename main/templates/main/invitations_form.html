@@ -5,10 +5,24 @@ Invitation Create
 {% endblock %}
 
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
+<div class="team-header-bar">
+    <div class="team-header-title">
+        <h1>Add a member</h1>
+        <a href="{% url 'team-task-list' myteam.id%}"><i class="fa-solid fa-left-long"></i>Go Back</a>
+    </div>
+    <div class="team-header-links">
+        <a href="{% url 'tasks'%}"><i class="fa-solid fa-house fa-xl"></i></a>
+    </div>
+</div>
+<div class="card-body">
+    <div class="invitations-form">
+        <form method="POST">
+            {% csrf_token %}
+            <label>Username:</label>
+            {{form.userID}}
 
-    <button type="submit">Invite</button>
-</form>
+            <button type="submit" class="team-btn">Invite</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

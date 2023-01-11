@@ -5,25 +5,66 @@ Team Task list
 {% endblock %}
 
 {%block content%}
-
-    <a href="{% url 'team-list' %}">Go Back</a>
-    {% if request.user == myteam.owner %}
-    <a href="{% url 'team-invite' myteam.id %}">Invite</a>
-    {% endif %}
-
-    {% for task in tasks %}
-        <h1>{{task.title}}</h1>
-        <a href="{% url 'team-task-update' task.id%}">edit</a>
-        {% if request.user == myteam.owner or request.user in moderators %}
-        <a href="{% url 'team-task-delete' task.id%}">X</a>
+<div class="team-header-bar">
+    <div class="team-header-title">
+        <h1>{{myteam}} Tasks</h1>
+        <a href="{% url 'team-list' %}"><i class="fa-solid fa-left-long"></i>Go Back</a>
+    </div>
+    <div class="team-header-links">
+        <a href="{% url 'tasks'%}"><i class="fa-solid fa-house fa-xl"></i></a>
+        {% if request.user == myteam.owner %}
+            <a href="{% url 'team-detail' myteam.id %}"><i class="fa-solid fa-wrench fa-xl"></i></a>
+            <a href="{% url 'team-invite' myteam.id %}"><i class="fa-solid fa-user-plus fa-xl"></i></a>
         {% endif %}
-    {% endfor %}
-    <br>
-    {% if request.user == myteam.owner or request.user in moderators %}
-    <a href="{% url 'team-task-create' myteam.id %}">Create new task</a>
-    {% endif %}
-    {% if request.user == myteam.owner %}
-    <a href="{% url 'team-detail' myteam.id %}">Edit Team</a>
-    {% endif %}
+
+    </div>
+</div>
+<div class="list-form">
+    <div class="team-list-form-header">
+        <div class="team-list-form-search">
+            <form>
+                <input type="text" name="search_area" value="{{search_input}}" placeholder="Search for tasks">
+                <input type="submit" class="team-btn" value="search">
+            </form>
+        </div>
+        <a class="team-list-form-header-add" href="{% url 'team-task-create' myteam.id%}"><i class="fa-solid fa-plus"></i></a>
+    </div>
+    <div class="list-VIP">
+        {% for task in tasks %}
+            {% if task.urgent and not task.complete%}
+            <div class="list-VIP-content">
+                <div class="list-VIP-item">
+                    <div class="list-VIP-icon"><i class="fa-solid fa-star"></i></div>
+                    <u><a href="{% url 'team-task-update' task.id myteam.id %}">{{task.title}}</a></u>
+                </div>
+                <a href="{% url 'task-delete' task.id %}" class="team-list-delete"><i class="fa-solid fa-trash fa-lg"></i></a>
+            </div>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+    <div class="list">
+        {% for task in tasks %}
+        <div class="list-content-wrapper">
+            <div class="list-content-title">
+            {% if task.complete %}
+                <div class="list-content-complete"></div>
+                <a href="{% url 'team-task-update' task.id myteam.id %}"><s>{{task.title}}</s></a>
+            {%else%}
+                <div class="list-content-imcomplete"></div>
+                <a href="{%url 'team-task-update' task.id myteam.id %}">{{task.title}}</a>
+            {%endif%}
+            </div>
+            <div class="list-content-delete">
+                {% if request.user == myteam.owner or request.user in moderators %}
+                    <a href="{% url 'team-task-delete' task.id %}"><i class="fa-solid fa-trash fa-lg"></i></a>
+                    {% endif %}
+            </div>
+        </div>
+        {%empty%}
+        <p>Task list is empty</p>
+        {%endfor%}
+    </div>
+</div>
     
 {%endblock%}

@@ -5,12 +5,25 @@ Team Create
 {% endblock %}
 
 {%block content%}
-
-    <a href="{% url 'tasks' %}">Go Back</a>
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Create</button>
-</form>
+<div class="team-header-bar">
+    <div class="team-header-title">
+        <h1>New Team</h1>
+        <a href="{% url 'team-list' %}"><i class="fa-solid fa-left-long"></i>Go Back</a>
+    </div>
+    <div class="team-header-links">
+        <a href="{% url 'tasks'%}"><i class="fa-solid fa-house fa-xl"></i></a>
+        {% if invite_count > 0 %}
+            <a href="{% url 'invite-list' %}">Invites</a>
+        {% endif %}
+    </div>
+</div>
+<div class="team-create-form">
+    <form method="POST">
+        {% csrf_token %}
+        <label>Team Name:</label>
+        {{form.name}}
+        <button type="submit" class="team-btn">Create</button>
+    </form>
+</div>
 
 {%endblock%}

@@ -6,16 +6,26 @@ Delete
 
 {% block content %}
 
-<div class="header-bar">
-    <a href="{% url 'tasks' %}">&#8630; Go Back</a>
+{% if task.team %}
+<div class="team-header-bar">
+    <a href="{% url 'team-task-list' task.team.id%}"><i class="fa-solid fa-left-long"></i>Go Back</a>
 </div>
+{% else %}
+<div class="header-bar">
+    <a href="{% url 'tasks' %}"><i class="fa-solid fa-left-long"></i>Go Back</a>
+</div>
+{% endif %}
 
 <div class="card-body">
 
     <form method="POST">
         {% csrf_token %}
         <p>Are you sure you want to delete task <strong><u>"{{task.title}}"</u></strong> ?</p>
+        {% if task.team %}
+        <button type="submit" class="team-btn" >Delete</button>
+        {% else %}
         <button type="submit" class="btn" >Delete</button>
+        {% endif %}
     </form>
 
 </div>

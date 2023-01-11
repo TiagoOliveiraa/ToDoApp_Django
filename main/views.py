@@ -119,6 +119,12 @@ class teamTaskList(LoginRequiredMixin, ListView):
         context['tasks'] = context['tasks'].filter(team = myteam)
         context['moderators'] = context['myteam'].moderator.all()
         
+        search_input = self.request.GET.get("search_area") or ''
+        if search_input:
+            context['tasks'] = context['tasks'].filter(title__icontains=search_input)
+            
+        context['search_input'] = search_input
+        
         return context
     
 class teamTaskCreate(LoginRequiredMixin, CreateView):
@@ -130,6 +136,12 @@ class teamTaskCreate(LoginRequiredMixin, CreateView):
     def get_success_url(self, **kwargs):
         team = Team.objects.get(id = self.kwargs['id'])
         return reverse_lazy("team-task-list", args = [team.id])
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['team'] = Team.objects.get(id = self.kwargs['id'])
+        
+        return context
     
     def form_valid(self, form, **kwargs):
         form.instance.team = Team.objects.get(id=self.kwargs['id'])
@@ -169,12 +181,20 @@ class teamDelete(LoginRequiredMixin,DeleteView):
 class teamTaskUpdate(LoginRequiredMixin, UpdateView):
     
     model = Task
+    context_object_name = "task"
     fields = ['title','description','urgent','complete']
+    template_name = 'main/team_task_create.html'
     
     def get_success_url(self,**kwargs):
         task = Task.objects.get(id = self.kwargs['pk'])
         team = task.team
         return reverse_lazy('team-task-list', args = [team.id])
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['team'] = Team.objects.get(id = self.kwargs['teamid'])
+        
+        return context
     
 class teamTaskDelete(LoginRequiredMixin, DeleteView):
     
@@ -221,6 +241,12 @@ class teamInvite(LoginRequiredMixin, CreateView):
     def get_success_url(self,**kwargs):
         id = self.kwargs['id']
         return reverse_lazy('team-task-list', args = [id])
+    
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['myteam'] = Team.objects.get(id = self.kwargs['id'])
+        
+        return context
     
     
     
