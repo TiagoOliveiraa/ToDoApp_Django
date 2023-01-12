@@ -16,21 +16,25 @@ Team Detail
     </div>
 </div>
 <div class="team-form">
-    <div class="team-detail-elements">
+    <div class="team-detail-owner">
         <h1>Owner</h1>
         <div class="team-detail-owner-name">
             {{team.owner}}
         </div>
+    </div>
+    <div class="team-detail-elements">
             <h1>Members</h1>
             {% for member in members %}
-            <div class="team-detail-name">
+            <div class="team-detail-member-name">
                 <p>{{member.username}}</p>
-                <a href = "{% url 'remove-from-team' team.id member.id%}">X</a>
-                {% if member not in moderators %}
-                <a href="{% url 'add-moderator' team.id member.id%}">Add as moderator</a>
-                {% else %}
-                <a href="{% url 'remove-moderator' team.id member.id%}">Remove as moderator</a>
-                {% endif %}
+                <div class="team-detail-member-options">
+                    {% if member not in moderators %}
+                    <a href="{% url 'add-moderator' team.id member.id%}">Add as moderator</a>
+                    {% else %}
+                    <a href="{% url 'remove-moderator' team.id member.id%}">Remove as moderator</a>
+                    {% endif %}
+                    <a href = "{% url 'remove-from-team' team.id member.id%}"><i class="fa-solid fa-trash fa-xl"></i></a>
+                </div>
             </div>
             {% endfor %}
     </div>

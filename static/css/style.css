@@ -495,11 +495,38 @@ textarea{
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 15rem;
+    max-height: 30rem;
 }
+
+.team-detail-owner{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .team-detail-owner-name{
     text-transform: capitalize;
 }
 
-.team-detail-name{
+.team-detail-member-name{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 5px;
+    padding:10px;
+    border-top: 1px solid rgb(226,226,226);
+    width: 100%;
+    height: 100%;
+}
 
+.team-detail-member-name a{
+    text-decoration: none;
+    color: rgb(26, 26, 26);
+}
+
+.team-detail-member-options{
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
 }
