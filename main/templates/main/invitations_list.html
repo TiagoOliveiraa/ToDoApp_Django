@@ -1,20 +1,28 @@
 {% extends "main/base.html" %}
 
 {% block content %}
-<p>{{count}}</p>
-    {% if count == 1 %}
+<div class="team-header-bar">
+    <div class="team-header-title">
+        <h1>{{request.user}} Invites</h1>
+        <a href="{% url 'team-list'%}"><i class="fa-solid fa-left-long"></i>Go Back</a>
+    </div>
+    <div class="team-header-links">
+        <a href="{% url 'tasks'%}"><i class="fa-solid fa-house fa-xl"></i></a>
+    </div>
+</div>
+<div class="team-form">
+    <div class="invite-list-elements">
         {% for invite in invites %}
-            <p>Team: {{invite.teamID.name}}</p>
-            <p>By: {{invite.teamID.owner.username}}</p>
-            <input type="button" name="accept" value="Accept"  onclick=location.href='{% url 'accept-invite-home' invite.id%}' >
-            <input type="button" name="deny" value="Deny" onclick=location.href ='{% url 'deny-invite-home' invite.id%}' >
-        {% endfor %}
-    {% else %}
-        {% for invite in invites %}
-            <p>Team: {{invite.teamID.name}}</p>
-            <p>By: {{invite.teamID.owner.username}}</p>
-            <input type="button" name="accept" value="Accept"  onclick=location.href='{% url 'accept-invite' invite.id%}' >
-            <input type="button" name="deny" value="Deny" onclick=location.href ='{% url 'deny-invite' invite.id%}' >
-        {% endfor %}
-    {% endif %}
+        <div class="invite-element">
+            <div class="invite-element-name">
+            {{invite.teamID.owner.username.capitalize}} invited you to join {{invite.teamID.name}}
+            </div>
+            <div class="invite-element-input">
+                <input type="button" name="accept" value="Accept" class="team-btn" onclick=location.href="{% url 'accept-invite' invite.id %}" >
+                <input type="button" name="deny" value="Deny" class="team-btn" onclick=location.href="{% url 'deny-invite' invite.id %}" >
+            </div>
+        </div>
+            {% endfor %}
+    </div>
+</div>
 {% endblock %}

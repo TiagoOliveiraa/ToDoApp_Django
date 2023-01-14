@@ -271,31 +271,22 @@ def accept_invite(request,id):
     invite.teamID.member.add(request.user)
     invite.delete()
     
-    count = team.moderator.count()
+    count = invitations.objects.count()
     
-    if count > 1:
-        return HttpResponse("<html><script>window.location.replace('/invite-list/');</script></html>")
-    else:
+    if count == 0:
         return HttpResponse("<html><script>window.location.replace('/team-list/');</script></html>")
+    else:
+        return HttpResponse("<html><script>window.location.replace('/invite-list/');</script></html>")
 
 def deny_invite(request,id):
     invite = invitations.objects.get(id = id)
     invite.delete()
+    
+    count = invitations.objects.count()
+    print(count)
  
-    return HttpResponse("<html><script>window.location.replace('/invite-list/');</script></html>")
-
-def accept_invite_home(request,id):
-    invite = invitations.objects.get(id = id)
-    team = Team.objects.get(id = invite.teamID.id)
-    invite.teamID.member.add(request.user)
-    invite.delete()
-    
-    return HttpResponse("<html><script>window.location.replace('/team-list/');</script></html>")
-
-def deny_invite_home(request,id):
-    invite = invitations.objects.get(id = id)
-    invite.delete()
-    
-    return HttpResponse("<html><script>window.location.replace('/team-list/');</script></html>")
-
+    if count == 0:
+        return HttpResponse("<html><script>window.location.replace('/team-list/');</script></html>")
+    else:
+        return HttpResponse("<html><script>window.location.replace('/invite-list/');</script></html>")
     

@@ -2,7 +2,7 @@ from django.urls import path
 from .views import taskList, taskDetail, taskCreate, taskDelete, taskUpdate, CustomLogin, RegisterPage
 from .views import teamList,teamTaskList, teamTaskCreate, teamCreate, teamEdit, teamDelete, teamTaskUpdate,teamTaskDelete
 from .views import removeFromTeam, add_as_moderator, remove_as_moderator
-from .views import teamInvite, inviteList, accept_invite, accept_invite_home, deny_invite, deny_invite_home
+from .views import teamInvite, inviteList, accept_invite, deny_invite
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
@@ -20,8 +20,6 @@ urlpatterns = [
     path('team-create/',teamCreate.as_view(), name="team-create"),
     path('team-invitation/<int:id>/', teamInvite.as_view(), name="team-invite"),
     path('invite-list/', inviteList.as_view(), name="invite-list"),
-    path('accept-invite-home/<int:id>/', accept_invite_home, name="accept-invite-home"),
-    path('deny-invite-home/<int:id>/', deny_invite_home, name="deny-invite-home"),
     path('accept-invite/<int:id>/', accept_invite, name="accept-invite"),
     path('deny-invite/<int:id>/', deny_invite, name="deny-invite"),
     path('team-detail/<int:pk>',teamEdit.as_view(), name="team-detail"),
@@ -32,3 +30,7 @@ urlpatterns = [
     path('team-task-update/<int:pk>/<int:teamid>', teamTaskUpdate.as_view(), name="team-task-update"),
     path('team-task-delete/<int:pk>/', teamTaskDelete.as_view(), name='team-task-delete'),
 ]
+
+#Falta o erro de apagar as VIP
+#Falta o styling de aceitar o invite
+#Falta tirar o criar tarefa

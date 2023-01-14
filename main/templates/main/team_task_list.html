@@ -27,7 +27,9 @@ Team Task list
                 <input type="submit" class="team-btn" value="search">
             </form>
         </div>
+        {% if request.user == myteam.owner or request.user in moderators %}
         <a class="team-list-form-header-add" href="{% url 'team-task-create' myteam.id%}"><i class="fa-solid fa-plus"></i></a>
+        {% endif %}
     </div>
     <div class="list-VIP">
         {% for task in tasks %}
@@ -37,7 +39,9 @@ Team Task list
                     <div class="list-VIP-icon"><i class="fa-solid fa-star"></i></div>
                     <u><a href="{% url 'team-task-update' task.id myteam.id %}">{{task.title}}</a></u>
                 </div>
+                {% if request.user == myteam.owner or request.user in moderators %}
                 <a href="{% url 'task-delete' task.id %}" class="team-list-delete"><i class="fa-solid fa-trash fa-lg"></i></a>
+                {% endif %}
             </div>
             {% endif %}
 
